@@ -16,7 +16,7 @@ int main() {
 	//initialize tilemap
 	//TODO: this should probably done in init_game_state
 	tilemap map;
-	vec2 size = {11, 11};
+	vec2 size = {30, 30};
 	create_tilemap(&map, size); 
 	
 	//initialize game state
