@@ -20,6 +20,8 @@
 
 //enumeration for tile type
 typedef enum tile_type {
+	EMPTY
+	/*
 	FRUIT,
 	CROP,
 	FIELD,
@@ -28,6 +30,7 @@ typedef enum tile_type {
 	MOUNTAIN,
 	METAL,
 	NUM_TILE_TYPES
+	*/
 } tile_type;
 
 typedef struct tile {
@@ -38,26 +41,17 @@ typedef struct tile {
 typedef struct tilemap {
 
 	//dimensions
-	int width;
-	int height;
+	vec2 mapsize;
 
 	//array of all tiles in the tilemap (array size is width*height)
-	tile* tiles;
+	int tiles;
 
 	//tile dimensions
 	double tile_width;
 	double tile_height;
+
 } tilemap;
 
-int load_tilemap_from_file(tilemap* tilemap, const char* path);
-
-int load_tilemap_random(tilemap* tilemap, int width, int height);
-
-int write_tilemap_to_file(tilemap* tilemap, const char* path); 
-
-int destroy_tilemap(tilemap* tilemap);
+int create_tilemap(tilemap* map, int mapWidth, int mapHeight);
 
 void draw_tilemap(tilemap tilemap, vec2 center, Texture2D* sprites);
-
-void draw_tile(tile tile, int tile_width, int tile_height, vec2 center, Texture2D* sprites);
-
