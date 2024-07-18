@@ -6,6 +6,7 @@
 
 int load_art(game_state* state) {
 	state->tileSprites[0] = LoadTexture("C:/polytopia_clone/sprites/tile 40x40.png");
+	state->tileSprites[1] = LoadTexture("C:/polytopia_clone/sprites/tile 40x40 green.png");
 	if(state->tileSprites !=0) {
 		return 1;
 	}
