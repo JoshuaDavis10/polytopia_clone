@@ -1,14 +1,14 @@
 #pragma once
 
 #include "math.h"
+#include "tilemap.h"
 
 typedef struct game_state {
+	vec2 worldOrigin;
 	tilemap* world;
-
-	vec2 mousePos;
-	vec2 mouseScreenCell;
-	vec2 mouseOffset;
-	vec2 mouseWorldCell;
+	Texture2D* tileSprites;
 } game_state;
 
 int init_game_state(game_state* state); 
+
+void free_art(Texture2D* art);

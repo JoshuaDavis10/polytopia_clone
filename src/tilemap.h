@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../include/raylib.h"
+
 #include "math.h"
 
 #define FRUIT_CHANCE 18
@@ -20,7 +22,7 @@
 
 //enumeration for tile type
 typedef enum tile_type {
-	EMPTY
+	EMPTY,
 	/*
 	FRUIT,
 	CROP,
@@ -29,8 +31,9 @@ typedef enum tile_type {
 	FOREST,
 	MOUNTAIN,
 	METAL,
-	NUM_TILE_TYPES
 	*/
+	NUM_TILE_TYPES
+	
 } tile_type;
 
 typedef struct tilemap {
@@ -47,6 +50,8 @@ typedef struct tilemap {
 
 } tilemap;
 
-int create_tilemap(tilemap* map, int mapWidth, int mapHeight);
+void create_tilemap(tilemap* map, vec2 mapsize);
 
-void draw_tilemap(tilemap tilemap, vec2 center, Texture2D* sprites);
+void draw_tilemap(tilemap map, vec2 origin, Texture2D* sprites);
+
+void delete_tilemap(tilemap* map);
