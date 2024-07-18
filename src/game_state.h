@@ -3,6 +3,8 @@
 #include "math.h"
 
 typedef struct game_state {
+	tilemap* world;
+
 	vec2 mousePos;
 	vec2 mouseScreenCell;
 	vec2 mouseOffset;

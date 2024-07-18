@@ -33,18 +33,13 @@ typedef enum tile_type {
 	*/
 } tile_type;
 
-typedef struct tile {
-	vec2 position;
-	tile_type type;
-} tile;
-
 typedef struct tilemap {
 
 	//dimensions
 	vec2 mapsize;
 
 	//array of all tiles in the tilemap (array size is width*height)
-	int tiles;
+	int* tiles;
 
 	//tile dimensions
 	double tile_width;
