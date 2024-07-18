@@ -6,6 +6,7 @@
 
 int load_art(game_state* state) {
 	state->tileSprites[0] = LoadTexture("C:/polytopia_clone/sprites/tile 40x40.png");
+	state->tileSprites[1] = LoadTexture("C:/polytopia_clone/sprites/tile 40x40 green.png");
 	if(state->tileSprites !=0) {
 		return 1;
 	}
@@ -13,7 +14,8 @@ int load_art(game_state* state) {
 }
 
 int init_game_state(game_state* state) {
-	vec2 origin = {10, 2};
+	//TODO: origin should be calculated as center of screen in x axis?
+	vec2 origin = {15, 2};
 	state->worldOrigin = origin;
 	state->world = 0;
 	state->tileSprites = malloc(sizeof(Texture2D) * NUM_TILE_TYPES);

@@ -14,6 +14,7 @@ void create_tilemap(tilemap* map, vec2 mapsize) {
 	for(int i = 0; i < (mapsize.x * mapsize.y); i++) {
 		map->tiles[i] = 0;
 	}
+	map->tiles[10] = 1;
 }
 
 void draw_tilemap(tilemap map, vec2 origin, Texture2D* sprites) {
@@ -24,7 +25,7 @@ void draw_tilemap(tilemap map, vec2 origin, Texture2D* sprites) {
 		for(int x = 0; x < map.mapsize.x; x++) {
 			screenCoords.x = origin.x * map.tile_width  + (x-y) * (map.tile_width/2);
 			screenCoords.y = origin.y * map.tile_height + (x+y) * (map.tile_height/2);
-			DrawTexture(sprites[0], screenCoords.x, screenCoords.y, WHITE);
+			DrawTexture(sprites[map.tiles[y*((int)map.mapsize.y) + x]], screenCoords.x, screenCoords.y, WHITE);
 		}
 	}
 }

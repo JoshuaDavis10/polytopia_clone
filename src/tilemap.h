@@ -23,6 +23,7 @@
 //enumeration for tile type
 typedef enum tile_type {
 	EMPTY,
+	GRASS,
 	/*
 	FRUIT,
 	CROP,
