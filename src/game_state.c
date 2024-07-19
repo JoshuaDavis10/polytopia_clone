@@ -57,6 +57,31 @@ void update_mouse_info(mouse_info* info, double tileWidth, double tileHeight, ve
 	info->offset.x = ((int)mousePos.x)%((int)tileWidth);
 	info->offset.y = ((int)mousePos.y)%((int)tileHeight);
 
+
+	//calculate world cell
+
 	info->worldCell.x = (info->screenCell.y - origin.y) + (info->screenCell.x - origin.x);
 	info->worldCell.y = (info->screenCell.y - origin.y) - (info->screenCell.x - origin.x);
+
+	if(info->offset.y < (int)((-(0.5)*info->offset.x) + tileHeight/2)) {
+		//region 1
+		info->worldCell.x--;
+	}
+
+	if(info->offset.y < (int)(((0.5)*info->offset.x) - tileHeight/2)) {
+		//region 2
+		info->worldCell.y--;
+	}
+
+	if(info->offset.y > (int)(((0.5)*info->offset.x) + tileHeight/2)) {
+		//region 3
+		info->worldCell.y++;
+	}
+
+	if(info->offset.y > (int)((-(0.5)*info->offset.x) + 3*(tileHeight/2))) {
+		//region 4
+		info->worldCell.x++;
+	}
+
+
 }

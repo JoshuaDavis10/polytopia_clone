@@ -14,11 +14,18 @@ void display_mouse_info(mouse_info* info) {
 	DrawText(buf, 50, 75, 10, BLACK);
 	snprintf(buf, 100, "Mouse World Cell:  (%d, %d)", (int)info->worldCell.x, (int)info->worldCell.y);
 	DrawText(buf, 50, 100, 10, BLACK);
+	snprintf(buf, 100, "Mouse Offset    :  (%d, %d)", (int)info->offset.x, (int)info->offset.y);
+	DrawText(buf, 50, 125, 10, BLACK);
 }
 
 void draw_selected(game_state* state) {
 
 	DrawRectangle(state->mouseInfo.screenCell.x * state->world->tile_width, state->mouseInfo.screenCell.y * state->world->tile_height, state->world->tile_width, state->world->tile_height, BLUE);
+
+	vec2 screenCoords;
+	screenCoords.x = state->worldOrigin.x * state->world->tile_width  + (state->mouseInfo.worldCell.x - state->mouseInfo.worldCell.y) *  (state->world->tile_width/2);
+	screenCoords.y = state->worldOrigin.y * state->world->tile_height + (state->mouseInfo.worldCell.x + state->mouseInfo.worldCell.y) * (state->world->tile_height/2);
+	DrawTexture(state->tileSprites[0], screenCoords.x, screenCoords.y, YELLOW);
 
 	//screenCoords.x = origin.x * map.tile_width  + (x-y) * (map.tile_width/2);
 	//screenCoords.y = origin.y * map.tile_height + (x+y) * (map.tile_height/2);
