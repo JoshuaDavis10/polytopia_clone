@@ -12,7 +12,6 @@ Here are the design stages that I plan... obviously I don't have a great idea of
 	4) Cities: income, build units
 	5) Environment: implement tile types, resources, (hold off on water for a while lol)
 	6) City Leveling: now that environment resources exist, implement harvesting system that levels cities!
-	7) Camera System: relative positions and all that I guess? This is something totally new to me so will be fun to learn about.
 	
 	after this core ^^^ is set up:
 	- pathfinding based on environment (mountains, water, enemies, etc...)
