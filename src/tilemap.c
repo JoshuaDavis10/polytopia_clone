@@ -14,7 +14,6 @@ void create_tilemap(tilemap* map, vec2 mapsize) {
 	for(int i = 0; i < (mapsize.x * mapsize.y); i++) {
 		map->tiles[i] = 0;
 	}
-	map->tiles[10] = 1;
 }
 
 void draw_tilemap(tilemap map, vec2 origin, Texture2D* sprites) {
