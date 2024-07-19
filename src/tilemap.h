@@ -24,6 +24,7 @@
 typedef enum tile_type {
 	EMPTY,
 	GRASS,
+	SELECTED,
 	/*
 	FRUIT,
 	CROP,

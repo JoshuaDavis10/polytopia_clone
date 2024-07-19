@@ -20,12 +20,12 @@ void display_mouse_info(mouse_info* info) {
 
 void draw_selected(game_state* state) {
 
-	DrawRectangle(state->mouseInfo.screenCell.x * state->world->tile_width, state->mouseInfo.screenCell.y * state->world->tile_height, state->world->tile_width, state->world->tile_height, BLUE);
+	//DrawRectangle(state->mouseInfo.screenCell.x * state->world->tile_width, state->mouseInfo.screenCell.y * state->world->tile_height, state->world->tile_width, state->world->tile_height, BLUE);
 
 	vec2 screenCoords;
 	screenCoords.x = state->worldOrigin.x * state->world->tile_width  + (state->mouseInfo.worldCell.x - state->mouseInfo.worldCell.y) *  (state->world->tile_width/2);
 	screenCoords.y = state->worldOrigin.y * state->world->tile_height + (state->mouseInfo.worldCell.x + state->mouseInfo.worldCell.y) * (state->world->tile_height/2);
-	DrawTexture(state->tileSprites[0], screenCoords.x, screenCoords.y, YELLOW);
+	DrawTexture(state->tileSprites[SELECTED], screenCoords.x, screenCoords.y, WHITE);
 
 	//screenCoords.x = origin.x * map.tile_width  + (x-y) * (map.tile_width/2);
 	//screenCoords.y = origin.y * map.tile_height + (x+y) * (map.tile_height/2);
