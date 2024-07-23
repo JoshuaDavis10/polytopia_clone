@@ -6,26 +6,27 @@
 
 #include <stdio.h>
 
+//TODO: delete this later. used for testing
 void display_mouse_info(mouse_info* info) {
 	char buf[100];
-	snprintf(buf, 100, "Mouse Position:    (%d, %d)", (int)GetMouseX(), (int)GetMouseY());
+	snprintf(buf, 100, "Mouse Position:    (%d, %d)", GetMouseX(), GetMouseY());
 	DrawText(buf, 50, 50, 10, BLACK);
-	snprintf(buf, 100, "Mouse Screen Cell: (%d, %d)", (int)info->screenCell.x, (int)info->screenCell.y);
+	snprintf(buf, 100, "Mouse Screen Cell: (%d, %d)", info->screenCell.x, info->screenCell.y);
 	DrawText(buf, 50, 75, 10, BLACK);
-	snprintf(buf, 100, "Mouse World Cell:  (%d, %d)", (int)info->worldCell.x, (int)info->worldCell.y);
+	snprintf(buf, 100, "Mouse World Cell:  (%d, %d)", info->worldCell.x, info->worldCell.y);
 	DrawText(buf, 50, 100, 10, BLACK);
-	snprintf(buf, 100, "Mouse Offset    :  (%d, %d)", (int)info->offset.x, (int)info->offset.y);
+	snprintf(buf, 100, "Mouse Offset    :  (%d, %d)", info->offset.x, info->offset.y);
 	DrawText(buf, 50, 125, 10, BLACK);
 }
 
+//TODO: delete this later. or move to game_state. could have like a draw_game function that draws selected tile, units
+//tilemap, etc...
 void draw_selected(game_state* state) {
 
-	//DrawRectangle(state->mouseInfo.screenCell.x * state->world->tile_width, state->mouseInfo.screenCell.y * state->world->tile_height, state->world->tile_width, state->world->tile_height, BLUE);
-
-	vec2 screenCoords;
-	screenCoords.x = state->worldOrigin.x * state->world->tile_width  + (state->mouseInfo.worldCell.x - state->mouseInfo.worldCell.y) *  (state->world->tile_width/2);
-	screenCoords.y = state->worldOrigin.y * state->world->tile_height + (state->mouseInfo.worldCell.x + state->mouseInfo.worldCell.y) * (state->world->tile_height/2);
-	DrawTexture(state->tileSprites[SELECTED], screenCoords.x, screenCoords.y, WHITE);
+	Vector2 screenCoords;
+	screenCoords.x = state->worldOrigin.x * state->world->tile_width  + (state->mouseInfo.worldCell.x - state->mouseInfo.worldCell.y) *  (state->world->tile_width/2) - state->camera.x;
+	screenCoords.y = state->worldOrigin.y * state->world->tile_height + (state->mouseInfo.worldCell.x + state->mouseInfo.worldCell.y) * (state->world->tile_height/2) - state->camera.y;
+	DrawTextureEx(state->tileSprites[SELECTED], screenCoords, 0.0f, ((double)state->world->tile_width)/TILE_SPRITE_WIDTH, WHITE);
 
 	//screenCoords.x = origin.x * map.tile_width  + (x-y) * (map.tile_width/2);
 	//screenCoords.y = origin.y * map.tile_height + (x+y) * (map.tile_height/2);
@@ -33,7 +34,6 @@ void draw_selected(game_state* state) {
 }
 
 int main() {
-
 
 	//initialize raylib window
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "polytopia clone");
@@ -45,7 +45,9 @@ int main() {
 	vec2 size = {30, 30};
 	create_tilemap(&map, size); 
 	
+
 	//initialize game state
+
 	game_state state;
 
 	if(!init_game_state(&state)) {
@@ -53,7 +55,9 @@ int main() {
 		return -1;
 	}
 
+
 	//set state's world to map
+	//TODO: should also be done in init_game_state
 	state.world = &map;
 
 	//draw loop
@@ -64,10 +68,30 @@ int main() {
 
 			ClearBackground(WHITE);
 
-			draw_tilemap(*(state.world), state.worldOrigin, state.tileSprites);
-			update_mouse_info(&(state.mouseInfo), state.world->tile_width, state.world->tile_height, state.worldOrigin);
+			draw_tilemap(*(state.world), state.worldOrigin, state.camera, state.tileSprites);
+			update_mouse_info(&(state.mouseInfo), state.world->tile_width, state.world->tile_height, state.worldOrigin, state.camera);
 			display_mouse_info(&(state.mouseInfo));
 			draw_selected(&state);
+
+			if(IsKeyDown(KEY_Q)) {
+				zoom(state.world, 1, &(state.camera), state.worldOrigin);
+			}
+			if(IsKeyDown(KEY_E)) {
+				zoom(state.world, 0, &(state.camera), state.worldOrigin);
+			}
+
+			if(IsKeyDown(KEY_W)) {
+				move_camera(&state, UP);
+			}
+			if(IsKeyDown(KEY_S)) {
+				move_camera(&state, DOWN);
+			}
+			if(IsKeyDown(KEY_D)) {
+				move_camera(&state, RIGHT);
+			}
+			if(IsKeyDown(KEY_A)) {
+				move_camera(&state, LEFT);
+			}
 
 		//draw ends here
 		EndDrawing();

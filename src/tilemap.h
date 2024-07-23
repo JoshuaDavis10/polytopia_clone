@@ -47,13 +47,15 @@ typedef struct tilemap {
 	int* tiles;
 
 	//tile dimensions
-	double tile_width;
-	double tile_height;
+	//TODO: change this to a vec2
+	int tile_width;
+	int tile_height;
 
 } tilemap;
 
 void create_tilemap(tilemap* map, vec2 mapsize);
 
-void draw_tilemap(tilemap map, vec2 origin, Texture2D* sprites);
+//TODO: factor in camera coordinates
+void draw_tilemap(tilemap map, vec2 origin, vec2 camera, Texture2D* sprites);
 
 void delete_tilemap(tilemap* map);

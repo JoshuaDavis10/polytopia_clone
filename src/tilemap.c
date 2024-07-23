@@ -16,19 +16,20 @@ void create_tilemap(tilemap* map, vec2 mapsize) {
 	}
 }
 
-void draw_tilemap(tilemap map, vec2 origin, Texture2D* sprites) {
+void draw_tilemap(tilemap map, vec2 origin, vec2 camera, Texture2D* sprites) {
 	
-	vec2 screenCoords;
+	Vector2 screenCoords;
 	
 	for(int y = 0; y < map.mapsize.y; y++) {
 		for(int x = 0; x < map.mapsize.x; x++) {
-			screenCoords.x = (origin.x * map.tile_width)  + ((x-y) * (map.tile_width/2));
-			screenCoords.y = (origin.y * map.tile_height) + ((x+y) * (map.tile_height/2));
-			DrawTexture(sprites[map.tiles[y*((int)map.mapsize.y) + x]], screenCoords.x, screenCoords.y, WHITE);
+			screenCoords.x = (origin.x * map.tile_width)  + ((x-y) * (map.tile_width/2)) - camera.x;
+			screenCoords.y = (origin.y * map.tile_height) + ((x+y) * (map.tile_height/2)) - camera.y;
+			DrawTextureEx(sprites[map.tiles[y*(map.mapsize.y) + x]], screenCoords, 0.0f, ((double)map.tile_width)/TILE_SPRITE_WIDTH, WHITE);
 		}
 	}
 }
 
+//TODO: call this in destroy_game_state. Also plz rename it to destroy_tilemap lol
 void delete_tilemap(tilemap* map) {
 	free(map->tiles);
 }
