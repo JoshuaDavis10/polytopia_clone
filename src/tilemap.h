@@ -58,4 +58,4 @@ void create_tilemap(tilemap* map, vec2 mapsize);
 //TODO: factor in camera coordinates
 void draw_tilemap(tilemap map, vec2 origin, vec2 camera, Texture2D* sprites);
 
-void delete_tilemap(tilemap* map);
+void destroy_tilemap(tilemap* map);

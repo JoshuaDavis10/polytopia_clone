@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//TODO: this function can be expanded into the random generation and loading tilemap from files functions whenever you re-integrate the file stuff
 void create_tilemap(tilemap* map, vec2 mapsize) {
 	map->mapsize = mapsize;
 	map->tile_width  = TILE_SPRITE_WIDTH;
@@ -20,6 +21,8 @@ void draw_tilemap(tilemap map, vec2 origin, vec2 camera, Texture2D* sprites) {
 	
 	Vector2 screenCoords;
 	
+	//TODO: adjust y coordinate of tile depending on tile type (basically, some will be taller. like mountains for example)
+
 	for(int y = 0; y < map.mapsize.y; y++) {
 		for(int x = 0; x < map.mapsize.x; x++) {
 			screenCoords.x = (origin.x * map.tile_width)  + ((x-y) * (map.tile_width/2)) - camera.x;
@@ -29,7 +32,6 @@ void draw_tilemap(tilemap map, vec2 origin, vec2 camera, Texture2D* sprites) {
 	}
 }
 
-//TODO: call this in destroy_game_state. Also plz rename it to destroy_tilemap lol
-void delete_tilemap(tilemap* map) {
+void destroy_tilemap(tilemap* map) {
 	free(map->tiles);
 }

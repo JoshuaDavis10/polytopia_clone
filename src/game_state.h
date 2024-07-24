@@ -23,26 +23,26 @@ typedef struct mouse_info {
 
 typedef struct game_state {
 
-	//TODO: temporary. select_tile function will determine which tile is clicked so mouse info does not need to be a part of state. 
-	//int selectedTileIndex;
-	mouse_info mouseInfo;
-
+	//tilemap stuff
 	vec2 worldOrigin;
-	//TODO: if tilemap is created in init_game_state, it shouldn't be a pointer right?
-	//otherwise it would go out of scope? so like pass a pointer to state's tilemap into create_tilemap? idek
 	tilemap* world;
+	vec2 selectedTile;
 
+	//camera
 	vec2 camera;
 	
+	//art
 	Texture2D* tileSprites;
 
 } game_state;
 
-int init_game_state(game_state* state); 
+int init_game_state(game_state* state, tilemap* world, vec2 worldSize); 
 
-void free_art(Texture2D* art);
+void destroy_game_state(game_state* state); 
 
-void update_mouse_info(mouse_info* info, int tileWidth, int tileHeight, vec2 origin, vec2 camera);
+void select_tile(game_state* state);
+
+void draw_selected_tile(game_state* state);
 
 void zoom(tilemap* map, int outFlag, vec2* camera, vec2 origin);
 

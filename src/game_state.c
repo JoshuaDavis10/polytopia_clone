@@ -11,102 +11,117 @@
 #define ZOOM_SPEED 0.02f
 #define CAMERA_SPEED 4 
 
+
 int load_art(game_state* state) {
 
 	state->tileSprites[EMPTY] = LoadTexture("C:/polytopia_clone/sprites/tile cube.png");
 	state->tileSprites[GRASS] = LoadTexture("C:/polytopia_clone/sprites/tile cube green.png");
 	state->tileSprites[SELECTED] = LoadTexture("C:/polytopia_clone/sprites/square tile wireframe.png");
 
-
-	if(state->tileSprites !=0) {
-		return 1;
-	}
-
-	return 0;
+	return 1;
 }
 
-void init_mouse_info(game_state* state) {
-	vec2 zeroVector = {0,0};
-	state->mouseInfo.screenCell = zeroVector;
-	state->mouseInfo.offset     = zeroVector;
-	state->mouseInfo.worldCell  = zeroVector;
-}
 
-int init_game_state(game_state* state) {
+int init_game_state(game_state* state, tilemap* world, vec2 worldSize) {
 	
-	//TODO: create the tilemap in here rather than in main
-
+	//camera and origin
 	vec2 origin = {10, -10};
-
 	vec2 cameraStart = {0,0};
 	state->camera = cameraStart;
 	state->worldOrigin = origin;
-	state->world = 0;
 
+	//tilemap
+	state->world = world;
+	create_tilemap(world, worldSize);
+	vec2 initialSelectedTile = {-1, -1};
+	state->selectedTile = initialSelectedTile; //selectedTile of -1 means no tile is selected
+
+	//tile art
 	state->tileSprites = malloc(sizeof(Texture2D) * NUM_TILE_TYPES);
-
-	if(!load_art(state)) {
-		printf("ERROR: failed to load art.\n");
-		return 0;
-	}
-
-	init_mouse_info(state);
+	load_art(state);
 
 	return 1;
 }
 
-//TODO: have a destroy_game_state function that handles this and other things like destroying the tilemap (if
-//it exists?)
-void free_art(Texture2D* art) {
-	free(art);
+
+//destroy game state (i.e. free all dynamically allocated memory)
+void destroy_game_state(game_state* state) {
+	free(state->tileSprites);
+	destroy_tilemap(state->world);
 }
 
-//TODO: change this to select_tile or smn and factor in camera.
-//honestly just have game_state state* be the paramter at this point
-void update_mouse_info(mouse_info* info, int tileWidth, int tileHeight, vec2 origin, vec2 camera) {
-	vec2 mousePos;
-	mousePos.x = GetMouseX() + camera.x;
-	mousePos.y = GetMouseY() + camera.y;
-	info->screenCell.x = (mousePos.x)/(tileWidth);
-	info->screenCell.y = (mousePos.y)/(tileHeight);
 
-	info->offset.x = (mousePos.x)%(tileWidth);
-	info->offset.y = (mousePos.y)%(tileHeight);
+//TODO: change this to select_tile or smn and factor in camera.
+void select_tile(game_state* state) {
+	vec2 mousePos;
+	vec2 worldCell;
+	vec2 screenCell;
+	vec2 offset;
+	mousePos.x = GetMouseX() + state->camera.x;
+	mousePos.y = GetMouseY() + state->camera.y;
+	screenCell.x = (mousePos.x)/(state->world->tile_width);
+	screenCell.y = (mousePos.y)/(state->world->tile_height);
+
+	offset.x = (mousePos.x)%(state->world->tile_width);
+	offset.y = (mousePos.y)%(state->world->tile_height);
 
 
 	//calculate world cell
 
-	info->worldCell.x = (info->screenCell.y - origin.y) + (info->screenCell.x - origin.x);
-	info->worldCell.y = (info->screenCell.y - origin.y) - (info->screenCell.x - origin.x);
+	worldCell.x = (screenCell.y - state->worldOrigin.y) + (screenCell.x - state->worldOrigin.x);
+	worldCell.y = (screenCell.y - state->worldOrigin.y) - (screenCell.x - state->worldOrigin.x);
 
-	if(info->offset.y < (int)((-(0.5)*info->offset.x) + tileHeight/2)) {
+	if(offset.y < (int)((-(0.5)*offset.x) + state->world->tile_height/2)) {
 		//region 1
-		info->worldCell.x--;
+		worldCell.x--;
 	}
 
-	if(info->offset.y < (int)(((0.5)*info->offset.x) - tileHeight/2)) {
+	if(offset.y < (int)(((0.5)*offset.x) - state->world->tile_height/2)) {
 		//region 2
-		info->worldCell.y--;
+		worldCell.y--;
 	}
 
-	if(info->offset.y > (int)(((0.5)*info->offset.x) + tileHeight/2)) {
+	if(offset.y > (int)(((0.5)*offset.x) + state->world->tile_height/2)) {
 		//region 3
-		info->worldCell.y++;
+		worldCell.y++;
 	}
 
-	if(info->offset.y > (int)((-(0.5)*info->offset.x) + 3*(tileHeight/2))) {
+	if(offset.y > (int)((-(0.5)*offset.x) + 3*(state->world->tile_height/2))) {
 		//region 4
-		info->worldCell.x++;
+		worldCell.x++;
 	}
 
-
+	if(worldCell.x < 0 || worldCell.x >= state->world->mapsize.x || worldCell.y < 0 || worldCell.y >= state->world->mapsize.y) {
+		state->selectedTile.x = -1;
+	}
+	else {
+		state->selectedTile.x = worldCell.x;
+		state->selectedTile.y = worldCell.y;
+	}
 }
 
+
+void draw_selected_tile(game_state* state) {
+
+	if(state->selectedTile.x < 0 || state->selectedTile.y < 0) {
+		return;
+	}
+
+	//calculate screen coordinates
+	Vector2 screenCoords;
+	screenCoords.x = (state->worldOrigin.x * state->world->tile_width)  + ((state->selectedTile.x-state->selectedTile.y) * (state->world->tile_width/2)) - state->camera.x;
+	screenCoords.y = (state->worldOrigin.y * state->world->tile_height) + ((state->selectedTile.x+state->selectedTile.y) * (state->world->tile_height/2)) - state->camera.y;
+
+	//draw
+	DrawTextureEx(state->tileSprites[SELECTED], screenCoords, 0.0f, ((double)state->world->tile_width)/TILE_SPRITE_WIDTH, WHITE);
+}
+
+
+//TODO: weird bug happens when zooming in or out where it kinda snaps to a tile rather than zooming to the legit center location...
 void zoom(tilemap* map, int outFlag, vec2 *camera, vec2 origin) {
+
 	static double timeOfZoom = 0.0f;
 	double timeSinceZoom = GetTime() - timeOfZoom;
-	//TODO: put some sort of timer in here so you can control speed of zoom
-
 
 	if(timeSinceZoom > ZOOM_SPEED) {
 
@@ -161,6 +176,7 @@ void zoom(tilemap* map, int outFlag, vec2 *camera, vec2 origin) {
 
 	}
 }
+
 
 void move_camera(game_state* state, int direction) {
 	switch(direction) {

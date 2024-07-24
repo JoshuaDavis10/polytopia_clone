@@ -1,31 +1,21 @@
 TILEMAP STUFF:
-- refactor everything that you've already done so that it's more cohesive (i.e. some stuff you did was kind of slapped on or janky as you realized
-what you needed)
-	-> things to consider while doing this:
-		-> should probably make vec2 have int components cuz you rlly never need doubles (you're constantly
-		typecasting to ints anyway)
-		-> mouse update should only be happening on a mouse click and honeslty it's sole purpose is to determine which tile was clicked (i.e. you don't
+
+(X) refactoring:
+	-> mouse update should only be happening on a mouse click and honestly it's sole purpose is to determine which tile was clicked (i.e. you don't
 		have to store literally all the mouse data into the game state)
-		-> the way you draw tilemap may have to change if sprite height is weird (due to like a tree being on the tile) and will have to offset based
-		on that?
-		-> panning and zooming is a planned feature 
-		-> ...
 
-- pan and zoom functionality
-
-*********************************
-- refactor after you finish pan and zoom!!!!
-
-- pixel art for every tiletype in polytopia (including water! Don't wimp out! ALSO a village sprite)
+( ) pixel art for every tiletype in polytopia (including water! Don't wimp out! ALSO a village sprite)
 	-> again taller sprites will have to offset when drawn (this will have to be handled in draw_tilemap or whatever).
 
-- re-implement random map generation/loading maps to and from files
+( ) re-implement random map generation/loading maps to and from files
 
-- basic UI to create a new game (generate random map) or load saved game (load from file) or save current game (save to file)... idk you'll figure
+( ) basic UI to create a new game (generate random map) or load saved game (load from file) or save current game (save to file)... idk you'll figure
 it out when you get here lol
 
-- click and drag for map panning
+( ) click and drag for map panning
 
-- mouse-scroll wheel for zooming
+( ) mouse-scroll wheel for zooming
 
-- only redraw screen when state changes in some way!!!!! save computation
+( ) only redraw screen when state changes in some way!!!!! save computation
+
+GET ALL THAT DONE BY SATURDAY ^^^
