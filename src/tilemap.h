@@ -22,8 +22,12 @@
 
 //enumeration for tile type
 typedef enum tile_type {
-	EMPTY,
-	GRASS,
+	FIELD,
+	FOREST,
+	MOUNTAIN,
+	WATER,
+	OCEAN,  
+	VILLAGE,
 	SELECTED,
 	/*
 	FRUIT,

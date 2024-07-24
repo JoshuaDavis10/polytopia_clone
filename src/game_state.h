@@ -10,17 +10,6 @@ typedef enum direction {
 	RIGHT
 } direction;
 
-typedef struct mouse_info {
-
-	//TODO: screencell and offset can be temporary for printing to screen for testing
-	vec2 screenCell;
-	vec2 offset;
-
-	//this can be used to calculate index of tile selected
-	vec2 worldCell;
-
-} mouse_info;
-
 typedef struct game_state {
 
 	//tilemap stuff

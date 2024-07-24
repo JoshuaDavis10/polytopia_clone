@@ -19,7 +19,7 @@ int main() {
 
 		//tilemap
 		tilemap map;
-		vec2 size = {30, 30};
+		vec2 size = {3, 3};
 
 	if(!init_game_state(&state, &map, size)) {
 		printf("ERROR: failed to initialize game state.\n");
@@ -58,7 +58,7 @@ int main() {
 		//draw begins here
 		BeginDrawing();
 
-			ClearBackground(WHITE);
+			ClearBackground(BLACK);
 			draw_tilemap(*(state.world), state.worldOrigin, state.camera, state.tileSprites);
 			draw_selected_tile(&state);
 

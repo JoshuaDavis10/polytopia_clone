@@ -14,8 +14,12 @@
 
 int load_art(game_state* state) {
 
-	state->tileSprites[EMPTY] = LoadTexture("C:/polytopia_clone/sprites/tile cube.png");
-	state->tileSprites[GRASS] = LoadTexture("C:/polytopia_clone/sprites/tile cube green.png");
+	state->tileSprites[FIELD] = LoadTexture("C:/polytopia_clone/sprites/tile cube green.png");
+	state->tileSprites[FOREST] = LoadTexture("C:/polytopia_clone/sprites/forest cube.png");
+	state->tileSprites[MOUNTAIN] = LoadTexture("C:/polytopia_clone/sprites/mountain cube.png");
+	state->tileSprites[WATER] = LoadTexture("C:/polytopia_clone/sprites/water cube.png");
+	state->tileSprites[OCEAN] = LoadTexture("C:/polytopia_clone/sprites/ocean cube.png");
+	state->tileSprites[VILLAGE] = LoadTexture("C:/polytopia_clone/sprites/village cube.png");
 	state->tileSprites[SELECTED] = LoadTexture("C:/polytopia_clone/sprites/square tile wireframe.png");
 
 	return 1;
@@ -25,7 +29,7 @@ int load_art(game_state* state) {
 int init_game_state(game_state* state, tilemap* world, vec2 worldSize) {
 	
 	//camera and origin
-	vec2 origin = {10, -10};
+	vec2 origin = {20, 20};
 	vec2 cameraStart = {0,0};
 	state->camera = cameraStart;
 	state->worldOrigin = origin;
