@@ -38,10 +38,9 @@ int close_file(file* file) {
 }
 
 //read a line from the given file
-//TODO: should not pass pointer cuz that could accidentally change file handle?
-const char* read_line(file* file) {
+const char* read_line(file file) {
 	char buffer[32000];
-	if(fgets(buffer, 32000, file->handle) != 0) {
+	if(fgets(buffer, 32000, file.handle) != 0) {
 		int length = strlen(buffer);
 		char lineBuffer[length];
 
@@ -54,7 +53,7 @@ const char* read_line(file* file) {
 
 //write 'line' to the given file 
 //TODO: should not pass pointer cuz that could accidentally change file handle?
-int write_line(file* file, const char* line) {
+int write_line(file file, const char* line) {
 
 	//TODO: comparison here is undefined so fix it so that you can't write to a file in write mode that doesn't
 	//have that permission
@@ -71,7 +70,7 @@ int write_line(file* file, const char* line) {
 	strcpy(line_to_write, line);
 	strcat(line_to_write, "\n");
 
-	if(fputs(line_to_write, file->handle) == EOF) {
+	if(fputs(line_to_write, file.handle) == EOF) {
 		//return 0 for error
 		printf("Error. Failed to write line: '%s' to file.\n", line);
 		return 0;

@@ -26,17 +26,29 @@ int load_art(game_state* state) {
 }
 
 
-int init_game_state(game_state* state, tilemap* world, vec2 worldSize) {
+int init_game_state(game_state* state, tilemap* world) {
+
+	//menu flag
+	state->menuFlag = 1;
 	
 	//camera and origin
-	vec2 origin = {20, 20};
+	vec2 origin = {5, 0};
 	vec2 cameraStart = {0,0};
+	vec2 mouseInitial = {WINDOW_WIDTH/2, WINDOW_HEIGHT/2};
 	state->camera = cameraStart;
+	state->mousePosPrev = mouseInitial;
 	state->worldOrigin = origin;
 
 	//tilemap
 	state->world = world;
-	create_tilemap(world, worldSize);
+
+	//TODO: remove all this commented stuff
+	/*
+	if(!load_tilemap_from_file(world, "tilemaps/tilemap.txt")) {
+		printf("Failed to load file: tilemaps/tilemap.txt.\n");
+		return 0;
+	}
+	*/
 	vec2 initialSelectedTile = {-1, -1};
 	state->selectedTile = initialSelectedTile; //selectedTile of -1 means no tile is selected
 
@@ -54,8 +66,7 @@ void destroy_game_state(game_state* state) {
 	destroy_tilemap(state->world);
 }
 
-
-//TODO: change this to select_tile or smn and factor in camera.
+//TODO: don't let a tile be selected if it overlaps with the UI
 void select_tile(game_state* state) {
 	vec2 mousePos;
 	vec2 worldCell;
@@ -96,7 +107,8 @@ void select_tile(game_state* state) {
 	}
 
 	if(worldCell.x < 0 || worldCell.x >= state->world->mapsize.x || worldCell.y < 0 || worldCell.y >= state->world->mapsize.y) {
-		state->selectedTile.x = -1;
+		//state->selectedTile.x = -1;
+		//state->selectedTile.y = -1;
 	}
 	else {
 		state->selectedTile.x = worldCell.x;
@@ -181,23 +193,16 @@ void zoom(tilemap* map, int outFlag, vec2 *camera, vec2 origin) {
 	}
 }
 
+//TODO: don't let camera go "out of bounds"
+void move_camera(game_state* state) {
+	
+	vec2 move;
+	move.x = state->mousePosPrev.x - GetMouseX();
+	move.y = state->mousePosPrev.y - GetMouseY();
 
-void move_camera(game_state* state, int direction) {
-	switch(direction) {
-		case UP:
-			state->camera.y-= CAMERA_SPEED;
-			break;
-		case DOWN:
-			state->camera.y+= CAMERA_SPEED;
-			break;
-		case LEFT:
-			state->camera.x-= CAMERA_SPEED;
-			break;
-		case RIGHT:
-			state->camera.x+= CAMERA_SPEED;
-			break;
-		default:
-			printf("ERROR: undefined direction used in move_camera function.\n");
-			break;
-	}
+	state->camera.x += move.x;
+	state->camera.y += move.y;
+
+	state->mousePosPrev.x = GetMouseX();
+	state->mousePosPrev.y = GetMouseY();
 }

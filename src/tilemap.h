@@ -59,7 +59,12 @@ typedef struct tilemap {
 
 void create_tilemap(tilemap* map, vec2 mapsize);
 
-//TODO: factor in camera coordinates
+int load_tilemap_from_file(tilemap* map, const char* path); 
+
+void load_tilemap_random(tilemap* map, vec2 mapsize); 
+
+int save_tilemap_to_file(tilemap map, const char* path);
+
 void draw_tilemap(tilemap map, vec2 origin, vec2 camera, Texture2D* sprites);
 
 void destroy_tilemap(tilemap* map);

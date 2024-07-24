@@ -3,14 +3,10 @@
 #include "math.h"
 #include "tilemap.h"
 
-typedef enum direction {
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-} direction;
-
 typedef struct game_state {
+
+	//flag for in game or in menu
+	int menuFlag;
 
 	//tilemap stuff
 	vec2 worldOrigin;
@@ -19,13 +15,14 @@ typedef struct game_state {
 
 	//camera
 	vec2 camera;
+	vec2 mousePosPrev;
 	
 	//art
 	Texture2D* tileSprites;
 
 } game_state;
 
-int init_game_state(game_state* state, tilemap* world, vec2 worldSize); 
+int init_game_state(game_state* state, tilemap* world); 
 
 void destroy_game_state(game_state* state); 
 
@@ -35,4 +32,4 @@ void draw_selected_tile(game_state* state);
 
 void zoom(tilemap* map, int outFlag, vec2* camera, vec2 origin);
 
-void move_camera(game_state* state, int direction); 
+void move_camera(game_state* state); 

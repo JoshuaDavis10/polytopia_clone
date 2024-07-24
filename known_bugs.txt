@@ -1,0 +1,3 @@
+( ) weird zoom bug where it snaps to tiles
+
+( ) sometimes tile selection doesn't work properly. Mostly near edges? every other tile?

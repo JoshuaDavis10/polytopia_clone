@@ -14,15 +14,13 @@ UPDATES TO MAKE:
 (X) pixel art for every tiletype in polytopia (including water! Don't wimp out! ALSO a village sprite)
 	-> again taller sprites will have to offset when drawn (this will have to be handled in draw_tilemap or whatever).
 
-( ) re-implement random map generation/loading maps to and from files
+(X) re-implement random map generation/loading maps to and from files
 
-( ) basic UI to create a new game (generate random map) or load saved game (load from file) or save current game (save to file)... idk you'll figure
+(X) basic UI to create a new game (generate random map) or load saved game (load from file) or save current game (save to file)... idk you'll figure
 it out when you get here lol
 
-( ) click and drag for map panning
+(X) click and drag for map panning
 
 ( ) mouse-scroll wheel for zooming
-
-( ) only redraw screen when state changes in some way!!!!! save computation
 
 GET ALL THAT DONE BY SATURDAY ^^^
