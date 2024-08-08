@@ -1,5 +1,8 @@
 #include "button.h"
 #include "image.h"
+#include "panel.h"
+
+#include <stdio.h>
 
 int main() {
 
@@ -11,38 +14,35 @@ int main() {
 	btn1.on_click = on_click_change_color_red;
 
 	button btn2;
-	btn2 = create_button("but 2", 300, 100, 100, 50, GREEN, GRAY);
+	btn2 = create_button("but 2", 300, 100, 100, 50, BLUE, WHITE);
 	btn2.on_click= on_click_change_color_red;
 
 	image img1;
 	Texture2D temp = LoadTexture("C:/polytopia_clone/sprites/water cube.png");
-	img1 = create_image(temp, 200, 200, 10.0f);
+	img1 = create_image(temp, 200, 200, 2.0f);
+
+	panel panel1;
+	panel1 = create_panel(20, 20, 600, 400, PURPLE, 2, 1);
+	panel_add_button(&panel1, btn1);
+	panel_add_button(&panel1, btn2);
+	panel_add_image (&panel1, img1);
 
 	while(!WindowShouldClose()) {
 		BeginDrawing();
-		
-		draw_button(btn1);
-		draw_button(btn2);
-		draw_image(img1);
+
+		draw_panel(panel1);
 
 		if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 			vec2 mouse;
 			mouse.x = GetMouseX();
 			mouse.y = GetMouseY();
-
-			if(mouse.x > btn1.pos.x && mouse.y > btn1.pos.y && mouse.x < btn1.pos.x + btn1.size.x && mouse.y < btn1.pos.y + btn1.size.y) {
-				void (*fptr)(button*, vec2) = btn1.on_click;
-				fptr(&btn1, mouse);
-			}
-
-			if(mouse.x > btn2.pos.x && mouse.y > btn2.pos.y && mouse.x < btn2.pos.x + btn2.size.x && mouse.y < btn2.pos.y + btn2.size.y) {
-				void (*fptr)(button*, vec2) = btn2.on_click;
-				fptr(&btn2, mouse);
-			}
+			panel_check_click(&panel1, mouse);
 		}
 
 		EndDrawing();
 	}
+
+	destroy_panel(&panel1);
 
 	return 0;
 }

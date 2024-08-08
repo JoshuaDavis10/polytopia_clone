@@ -31,19 +31,24 @@ button create_button(const char* label, int x, int y, int width, int height, Col
 }
 
 //function that checks if the given button was pressed (requires mouse coordinates of click and the button itself)
-int check_click(button* button, vec2 mouse) {
-	//TODO: code here
-	//if button was clicked, run its on_click function
+void check_click(button* btn, vec2 mouse) {
+	if(mouse.x > btn->pos.x && mouse.y > btn->pos.y && mouse.x < btn->pos.x + btn->size.x && mouse.y < btn->pos.y + btn->size.y) {
+		void (*fptr)(button*, vec2) = btn->on_click;
+		fptr(btn, mouse);
+	}
 }
 
 //draws the button passed to the function
 void draw_button(button btn) {
-	DrawRectangle(btn.pos.x, btn.pos.y, btn.size.x, btn.size.y, btn.color);
+	Rectangle rect = {btn.pos.x, btn.pos.y, btn.size.x, btn.size.y};
+	DrawRectangleRounded(rect, 0.5f, 10, btn.color);
+
+
+	//TODO: fix label drawing to look super clean and crips and PROfessional
 	double labelSize = (double)(strlen(btn.label));
 	int fontSize = btn.size.y * (0.5 - labelSize/FONT_SIZE_MULTIPLIER);
 	DrawText(btn.label, btn.pos.x, btn.pos.y, fontSize, btn.labelColor);
-
-	//TODO: if labelSize > some threshold, split the string into parts. do this until all the parts are < some threshold. then draw each line
+	//if labelSize > some threshold, split the string into parts. do this until all the parts are < some threshold. then draw each line
 	//separately. there's a lot of math you'll have to do here haha
 }
 

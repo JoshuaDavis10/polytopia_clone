@@ -25,6 +25,9 @@ typedef struct button {
 //TODO: have parameter for on_click function. for now you will have to manually specify on_click function
 button create_button(const char* label, int x, int y, int width, int height, Color color, Color labelColor); 
 
+//function that checks if the given button was pressed (requires mouse coordinates of click and the button itself)
+void check_click(button* btn, vec2 mouse); 
+
 //draws the button passed to the function
 void draw_button(button btn); 
 
