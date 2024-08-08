@@ -3,7 +3,6 @@
 #include "tilemap.h"
 #include "defines.h"
 #include "game_state.h"
-#include "user_interface.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,33 +14,7 @@ void draw_game(game_state* state) {
 	ClearBackground(BLACK);
 	draw_tilemap(*(state->world), state->worldOrigin, state->camera, state->tileSprites);
 	draw_selected_tile(state);
-	if(state->selectedTile.x >= 0 || state->selectedTile.y >= 0) {
-		draw_game_UI(state);
-	}
-
 	EndDrawing();
-}
-
-int check_if_ui_closed() {
-	vec2 mouse;
-	mouse.x = GetMouseX();
-	mouse.y = GetMouseY();
-
-	vec2 button;
-	button.x = 9*WINDOW_WIDTH/10; 
-	button.y = 9*WINDOW_HEIGHT/10;
-
-	vec2 diff;
-	diff.x = mouse.x - button.x;
-	diff.y = mouse.y - button.y;
-
-	double dist = (diff.x * diff.x) + (diff.y * diff.y);
-
-	if(dist < (WINDOW_WIDTH/40 * WINDOW_WIDTH/40)) {
-		return 1;
-	}
-
-	return 0;
 }
 
 void handle_input(game_state* state) {
@@ -55,10 +28,6 @@ void handle_input(game_state* state) {
 
 	if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 		select_tile(state);			
-		if(check_if_ui_closed()) {
-			vec2 temp = {-1, -1};
-			state->selectedTile = temp;
-		}
 	}
 
 	if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
@@ -94,22 +63,11 @@ int main() {
 	//draw loop
 	while(!WindowShouldClose()) {
 		
-
-		if(state.menuFlag == 1) {
-			if(!draw_menu_screen(&state)) {
-				printf("ERROR: failed to load tilemap.\n");
-				return -1;
-			}
-		}
-
-		else {
-
 			//input stuff
 			handle_input(&state);
 
 			//actual draw
 			draw_game(&state);
-		}
 	}
 
 	//save game before exit

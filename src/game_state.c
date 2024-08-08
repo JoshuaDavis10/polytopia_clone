@@ -27,9 +27,6 @@ int load_art(game_state* state) {
 
 
 int init_game_state(game_state* state, tilemap* world) {
-
-	//menu flag
-	state->menuFlag = 1;
 	
 	//camera and origin
 	vec2 origin = {5, 0};
@@ -42,13 +39,11 @@ int init_game_state(game_state* state, tilemap* world) {
 	//tilemap
 	state->world = world;
 
-	//TODO: remove all this commented stuff
-	/*
 	if(!load_tilemap_from_file(world, "tilemaps/tilemap.txt")) {
 		printf("Failed to load file: tilemaps/tilemap.txt.\n");
 		return 0;
 	}
-	*/
+
 	vec2 initialSelectedTile = {-1, -1};
 	state->selectedTile = initialSelectedTile; //selectedTile of -1 means no tile is selected
 
