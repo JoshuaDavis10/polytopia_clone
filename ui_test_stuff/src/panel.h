@@ -28,8 +28,8 @@ void destroy_panel(panel* pnl);
 
 //add a button or image to the given panel
 //TODO: should these functions have more parameters and create the actual image rather than just passing one that's already been initialized. also all the parameters would be relative to the panel not the window!
-int panel_add_button(panel* pnl, button btn);
-int panel_add_image (panel* pnl, image  img);
+int panel_add_button(panel* pnl, const char* label, vec2 pos, vec2 size, Color color, Color labelColor, void (*fptr)(button* btn, vec2 mouse)); 
+int panel_add_image (panel* pnl, Texture2D sprite, vec2 pos, vec2 size, float scale);
 
 //draw the panel
 void draw_panel(panel pnl);

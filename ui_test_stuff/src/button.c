@@ -7,24 +7,16 @@
 
 
 //create button with given parameters
-//TODO: have parameter for on_click function. for now you will have to manually specify on_click function
-button create_button(const char* label, int x, int y, int width, int height, Color color, Color labelColor) {
+button create_button(const char* label, vec2 pos, vec2 size, Color color, Color labelColor, void (*fptr)(button* btn, vec2 mouse)) {
 
 	button retBtn;
 
-	vec2 tempPos;
-	tempPos.x = x;
-	tempPos.y = y;
-
-	vec2 tempSize;
-	tempSize.x = width;
-	tempSize.y = height;
-
 	retBtn.label      = label;
-	retBtn.pos        = tempPos;
-	retBtn.size       = tempSize;
+	retBtn.pos        = pos;
+	retBtn.size       = size;
 	retBtn.color      = color;
 	retBtn.labelColor = labelColor;
+	retBtn.on_click   = fptr;
 
 	return retBtn;
 
@@ -51,6 +43,10 @@ void draw_button(button btn) {
 	//if labelSize > some threshold, split the string into parts. do this until all the parts are < some threshold. then draw each line
 	//separately. there's a lot of math you'll have to do here haha
 }
+
+
+
+//TODO: delete all these example on_click functions later
 
 //example on_click function that can be set as a button's on_click function
 void on_click_display_msg(button* btn, vec2 mouse) {

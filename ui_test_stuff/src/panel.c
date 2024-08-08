@@ -33,16 +33,30 @@ void destroy_panel(panel* pnl) {
 	free(pnl->images);
 }
 
-//add a button or image to the given panel
-//TODO: should these functions have more parameters and create the actual image rather than just passing one that's already been initialized. also all the parameters would be relative to the panel not the window!
-int panel_add_button(panel* pnl, button btn) {
+//add a button to the given panel
+int panel_add_button(panel* pnl, const char* label, vec2 pos, vec2 size, Color color, Color labelColor, void (*fptr)(button* btn, vec2 mouse)) {
+
+	//check if max buttons have already been added
 	if(!(pnl->numButtons < pnl->maxButtons)) {
 		printf("WARNING: Tried to add button to panel (already has %d of %d).\n", pnl->numButtons, pnl->maxButtons);
 		return 0;
 	}
 
-	//TODO: check if button is within bounds of the panel (i.e. button isn't outside of or hanging off the panel)
-	//return 0 and print corresponding error message if the button is not within the panel
+	//if button hangs off either edge of panel, print warning
+	if(!(pos.x + size.x < pnl->size.x)) {
+		printf("WARNING: Tried to add button to panel (%d reaches past %d).\n", pos.x + size.x, pnl->size.x);
+		return 0;
+	}
+	if(!(pos.y + size.y < pnl->size.y)) {
+		printf("WARNING: Tried to add button to panel (%d reaches past %d).\n", pos.y + size.y, pnl->size.y);
+		return 0;
+	}
+	
+	vec2 translatedBtnPos;
+	translatedBtnPos.x = pnl->pos.x + pos.x;
+	translatedBtnPos.y = pnl->pos.y + pos.y;
+	button btn;
+	btn = create_button(label, translatedBtnPos, size, color, labelColor, fptr);
 
 	pnl->buttons[pnl->numButtons] = btn;
 	pnl->numButtons++;
@@ -50,15 +64,30 @@ int panel_add_button(panel* pnl, button btn) {
 	return 1;
 }
 
-//TODO: should these functions have more parameters and create the actual image rather than just passing one that's already been initialized. also all the parameters would be relative to the panel not the window!
-int panel_add_image (panel* pnl, image  img) {
+//add an image to the given panel
+int panel_add_image (panel* pnl, Texture2D sprite, vec2 pos, vec2 size, float scale) {
+
+	//check if max buttons have already been added
 	if(!(pnl->numImages < pnl->maxImages)) {
 		printf("WARNING: Tried to add image to panel (already has %d of %d).\n", pnl->numImages, pnl->maxImages);
 		return 0;
 	}
 
-	//TODO: check if image is within bounds of the panel (i.e. image isn't outside of or hanging off the panel)
-	//return 0 and print corresponding error message if the image is not within the panel
+	//if image hangs off either edge of panel, print warning
+	if(!(pos.x + (size.x*scale) < pnl->size.x)) {
+		printf("WARNING: Tried to add button to panel (%d reaches past %d).\n", pos.x + size.x, pnl->size.x);
+		return 0;
+	}
+	if(!(pos.y + (size.y*scale) < pnl->size.y)) {
+		printf("WARNING: Tried to add button to panel (%d reaches past %d).\n", pos.y + size.y, pnl->size.y);
+		return 0;
+	}
+	
+	vec2 translatedImgPos;
+	translatedImgPos.x = pnl->pos.x + pos.x;
+	translatedImgPos.y = pnl->pos.y + pos.y;
+	image img;
+	img = create_image(sprite, translatedImgPos, size, scale);
 
 	pnl->images[pnl->numImages] = img;
 	pnl->numImages++;
@@ -68,8 +97,9 @@ int panel_add_image (panel* pnl, image  img) {
 
 //draw the panel
 void draw_panel(panel pnl) {
+
 	Rectangle rect = {pnl.pos.x, pnl.pos.y, pnl.size.x, pnl.size.y};
-	DrawRectangleRounded(rect, 0.5, 10, pnl.color);
+	DrawRectangleRounded(rect, 0.1, 10, pnl.color);
 
 	for(int i = 0; i < pnl.numButtons; i++) {
 		draw_button(pnl.buttons[i]);

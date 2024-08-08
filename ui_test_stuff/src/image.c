@@ -1,16 +1,13 @@
 #include "image.h"
 
 //creates the image with the given parameters
-image create_image(Texture2D sprite, int x, int y, float scale) {
+image create_image(Texture2D sprite, vec2 pos, vec2 size, float scale) {
 	
 	image retImg;
 
-	vec2 tempPos;
-	tempPos.x = x;
-	tempPos.y = y;
-
 	retImg.sprite = sprite;
-	retImg.pos    = tempPos;
+	retImg.pos    = pos;
+	retImg.size   = size;
 	retImg.scale  = scale;
 
 	return retImg;

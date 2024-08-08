@@ -10,12 +10,13 @@ typedef struct image {
 
 	Texture2D sprite;
 	vec2 pos;
+	vec2 size;
 	float scale;
 
 } image;
 
 //creates the image with the given parameters
-image create_image(Texture2D sprite, int x, int y, float scale);
+image create_image(Texture2D sprite, vec2 pos, vec2 size, float scale);
 
 //draws the image passed to the function
 void draw_image(image img); 
